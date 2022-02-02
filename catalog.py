@@ -1,13 +1,5 @@
-import catalogPlugin as cp
 import json
-
-# get user pages obtain page id
-# get page catalogs
-# get the catalog id
-
-page_id = 'facebook page id'  # page id
-catalogID = 'page catalog id'  # catalogID
-retailer_id = 'real retailer id'
+from catalogPlugin import PageCatalog, get_catalog_products, get_batch_status, post_to_catalog, patch_product, delete_product
 
 create_requests = [
     {
@@ -89,21 +81,32 @@ delete_requests = [
     }
 ]
 
-def post_products(requests):
-    response = cp.post_to_catalog(catalogID, requests)
 
-    # response is a list of handles dicts. They can be used to track progress of batch request.
+def posting_to_catalog():
+    obj = PageCatalog()
+    
+    response = post_to_catalog(create_requests, obj)    
+    
+    return response
+
+
+# print(posting_to_catalog())
+
+def update_products(updates):
+    obj = PageCatalog()
+    
+    response = patch_product(obj, updates)
+
     print(json.dumps(response, indent=4))
     return response
 
-def update_products(updates):
-    response = cp.patch_product(catalogID, updates)
+
+def delete_products(delete_requests):
+    obj = PageCatalog()
+    response = delete_product(obj, delete_requests)
 
     print(json.dumps(response, indent=4))
+    return response
 
-def delete_products(catalogID, delete_requests):
-    response = cp.delete_product(catalogID, delete_requests)
 
-    print(json.dumps(response, indent=4))
-
-print(update_products(update_requests))
+# print(update_products(update_requests))
